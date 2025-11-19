@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getOrders, getOrderDetail } from './orderAPI';
+import { getOrders, getOrderDetail } from '@/features/order';
 import type { Order } from '@/types/order';
 
 export const useMyPageOrders = (status?: string) => {
