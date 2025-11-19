@@ -1,98 +1,81 @@
-import { CartCard, CartSideBar, useCartQuery, useDeleteCartItemMutation } from '@/features/cart';
+import { CartCard, useCartQuery } from '@/features/cart';
+import type { CartItem } from '@/types';
 import { CheckBox, ButtonBase } from '@/components/ui';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useOrderStore } from '@/features/order';
+import { useRewardStore } from '@/features/reward/store';
+import { useCartSummary } from './hook';
+import { useCartStore } from './store';
 
 export function CartList() {
+  const { setOrderInfo } = useOrderStore();
   const { data: cartItems = [], isLoading, isError } = useCartQuery();
-  //console.log('cart data', cartItems);
-  const { mutate: deleteItem } = useDeleteCartItemMutation();
+
   const navigate = useNavigate();
 
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
-  const [selectAll, setSelectAll] = useState(false);
+  const {
+    checkedItemSum,
+    discountSum,
+    //shippingFee,
+    shippingFeeText,
+    totalPayment,
+    rewardPoints,
+    totalQuantity,
+  } = useCartSummary();
 
-  const handleSelectAll = (checked: boolean) => {
-    setSelectAll(checked);
-    if (checked) {
-      setSelectedItems(cartItems.map((item) => Number(item.id)));
-    } else {
-      setSelectedItems([]);
-    }
-  };
+  const {
+    cartItems: storeItems,
+    selectAll,
+    setCartItems,
+    handleSelectAll,
+    handleItemCheck,
+    removeCheckedItems,
+  } = useCartStore();
 
-  const handleItemCheck = (id: number, checked: boolean) => {
-    if (checked) {
-      setSelectedItems((prev) => [...prev, id]);
-    } else {
-      setSelectedItems((prev) => prev.filter((itemId) => itemId !== id));
-    }
-  };
-
-  const removeCheckedItems = async () => {
-    // 먼저, 삭제할 항목들의 ID를 추출
-    const itemsToDelete = [...selectedItems];
-
-    // 삭제 항목들의 id를 순차적으로 처리
-    for (const id of itemsToDelete) {
-      try {
-        await deleteItem(id); // deleteItem을 비동기적으로 처리
-        console.log(`Item with id ${id} deleted successfully`);
-      } catch (error) {
-        console.error(`Failed to delete item with id ${id}:`, error);
-      }
-    }
-
-    // 삭제가 완료되면 선택된 항목 초기화
-    setSelectedItems([]); // 상태 초기화
-  };
+  const { setEarnedPoints } = useRewardStore();
 
   useEffect(() => {
-    if (selectedItems.length === cartItems.length) {
-      setSelectAll(true);
-    } else {
-      setSelectAll(false);
-    }
-  }, [selectedItems, cartItems]);
+    setEarnedPoints(rewardPoints);
+  }, [rewardPoints, setEarnedPoints]);
 
-  const calculateTotalPrice = () => {
-    return cartItems
-      .filter((item) => selectedItems.includes(item.id))
-      .reduce((acc, item) => acc + Number(item.price) * Number(item.amount), 0);
-  };
-
-  const calculateTotalDiscount = () => {
-    return cartItems
-      .filter((item) => selectedItems.includes(item.id))
-      .reduce(
-        (acc, item) =>
-          acc + (item.discount_amount ? Number(item.discount_amount) * Number(item.amount) : 0),
-        0
-      );
-  };
-
-  const calculateShippingFee = (totalPrice: number) => {
-    if (selectedItems.length === 0) return 0;
-    if (totalPrice >= 50000) return 0;
-    return 3500;
-  };
-
-  const calculateTotalRewardPoints = () => {
-    return cartItems
-      .filter((item) => selectedItems.includes(item.id))
-      .reduce((acc, item) => acc + Number(item.price) * Number(item.amount) * 0.01, 0);
-  };
-
-  const totalPrice = calculateTotalPrice();
-  const totalDiscount = calculateTotalDiscount();
-  const shippingFee = calculateShippingFee(totalPrice);
-  const totalRewardPoints = calculateTotalRewardPoints();
+  useEffect(() => {
+    if (!cartItems.length) return;
+    const newItems: CartItem[] = cartItems.map((product) => ({
+      id: product.id,
+      product_name: product.product_name ?? 'none',
+      // images:
+      //   typeof product.images === 'string'
+      //     ? product.images
+      //     : Array.isArray(product.images)
+      //       ? product.images[0]
+      //       : (product.images ?? 'http://placehold.co/200x200'),
+      price: Math.floor(product.price),
+      amount: product.amount ?? 0,
+      cart: product.cart,
+      checked: false,
+      product_card_image: product.product_card_image,
+      discount_amount: product.discount_amount,
+    }));
+    const isSame = JSON.stringify(storeItems) === JSON.stringify(newItems);
+    if (!isSame) setCartItems(newItems);
+  }, [cartItems, setCartItems]);
 
   const handlePurchase = () => {
+    const selectedItems = storeItems.filter((item: any) => item.checked);
+    if (storeItems.length === 0) return alert('상품을 선택해주세요!');
+    setOrderInfo(
+      selectedItems,
+      totalPayment,
+      checkedItemSum,
+      discountSum,
+      shippingFeeText,
+      totalQuantity
+    );
     navigate('/order/order');
   };
 
-  const finalAmount = totalPrice - totalDiscount + shippingFee;
+  console.log(cartItems); // 👈 API 구조 확인용
 
   if (isLoading) return <div>장바구니 정보를 불러오는 중입니다...</div>;
   if (isError) return <div>장바구니를 불러오지 못했습니다.</div>;
@@ -114,7 +97,7 @@ export function CartList() {
           </ButtonBase>
         </div>
 
-        {cartItems.map((product) => (
+        {storeItems.map((product) => (
           <CartCard
             key={product.id}
             id={String(product.id)}
@@ -128,24 +111,47 @@ export function CartList() {
                   : 'http://placehold.co/200x200'
             }
             amount={product.amount}
-            checked={selectedItems.includes(product.id)}
-            cart={product.cart}
-            onChange={(e) => handleItemCheck(Number(product.id), e.target.checked)}
+            checked={product.checked}
+            cart={product.cart} // 여기는 CartCardProps에 추가해야 함
+            onChange={(e) => handleItemCheck(String(product.id), e.target.checked)}
           />
         ))}
       </div>
       <div className='mt-5 w-full bg-white px-7.5 py-5 lg:mt-0 lg:w-[450px]'>
         <div className='py-5'>
-          <CartSideBar
-            selectedItems={selectedItems}
-            totalPrice={totalPrice}
-            totalDiscount={totalDiscount}
-            shippingFee={shippingFee}
-            finalAmount={finalAmount}
-            totalRewardPoints={totalRewardPoints}
-          />
-          <ButtonBase className='mt-7' fullWidth onClick={handlePurchase}>
-            구매하기
+          <h3 className='text-lg font-bold'>구매 금액</h3>
+          <ul className='mt-3 text-base leading-7'>
+            <li className='flex justify-between'>
+              <span>상품 금액</span>
+              <span>
+                <span>{checkedItemSum.toLocaleString()}</span>원
+              </span>
+            </li>
+            <li className='flex justify-between'>
+              <span>할인 금액</span>
+              <span>
+                <span>{discountSum.toLocaleString()}</span>원
+              </span>
+            </li>
+            <li className='flex justify-between'>
+              <span>배송비</span>
+              <span>{shippingFeeText}</span>
+            </li>
+            <li className='mt-4 flex justify-between'>
+              <span className='font-semibold'>총 결제 금액</span>
+              <span className='font-semibold'>
+                <span className='font-semibold'>{totalPayment.toLocaleString()}</span>원
+              </span>
+            </li>
+            <li className='flex justify-between'>
+              <span className=''>적립 혜택 예상</span>
+              <span className=''>
+                <span>{rewardPoints.toLocaleString()}</span>원
+              </span>
+            </li>
+          </ul>
+          <ButtonBase className='mt-7' variant='filled' fullWidth onClick={handlePurchase}>
+            {`${totalPayment.toLocaleString()}원 구매하기 (${totalQuantity}개)`}
           </ButtonBase>
         </div>
       </div>
