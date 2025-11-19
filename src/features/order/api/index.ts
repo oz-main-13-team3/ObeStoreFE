@@ -1,4 +1,4 @@
-export * from './orderAPI';
+export * from './getOrderAPI.ts';
 export * from './useMyPageOrderQuery.ts';
 export * from './useOrderQuery';
 export * from './usePaymentQuery';
