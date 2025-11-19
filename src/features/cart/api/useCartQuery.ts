@@ -1,24 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { type AxiosResponse } from 'axios';
 import type { CartItem } from '@/types';
 import { backendAPI } from '@/api';
 
-interface CartResponse {
-  id: number;
-  items: CartItem[];
-  price: number;
-  total_price: number;
-  user: number;
-  subtotal?: number;
-}
-
 const fetchCart = async (): Promise<CartItem[]> => {
-  const response: AxiosResponse<CartResponse> = await backendAPI.get('/carts');
-  const carts = response.data;
-
-  if (!Array.isArray(carts) || carts.length === 0) return [];
-
-  return carts[0].items ?? [];
+  const { data } = await backendAPI.get('/carts');
+  if (!Array.isArray(data) || data.length === 0) return [];
+  return data[0].items ?? [];
 };
 
 const deleteCartItem = async (id: number) => {
