@@ -1,4 +1,3 @@
-import { useCartOutQuery } from './api/useCartOutQuery';
 interface CartSideBarProps {
   selectedItems: number[];
   totalPrice: number;
@@ -15,15 +14,6 @@ export function CartSideBar({
   finalAmount,
   totalRewardPoints,
 }: CartSideBarProps) {
-  const { data: cartOutItems, isLoading, isError } = useCartOutQuery();
-  if (isLoading) {
-    return <div>금액 정보를 불러오는 중...</div>;
-  }
-
-  if (isError || !cartOutItems) {
-    return <div>금액 정보를 불러올 수 없습니다.</div>;
-  }
-
   return (
     <>
       <h3 className='text-lg font-bold'>구매 금액</h3>
