@@ -16,7 +16,7 @@ export function FavoriteIcon({ product, className }: FavoriteIconProps) {
 
   const isFavorited = favoriteProducts.some((p) => p.id === product.id);
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     e.preventDefault();
 
@@ -24,7 +24,7 @@ export function FavoriteIcon({ product, className }: FavoriteIconProps) {
       alert('로그인이 필요한 기능입니다.');
       openModal('login');
     } else {
-      toggleFavorite(product);
+      await toggleFavorite(product);
     }
   };
 

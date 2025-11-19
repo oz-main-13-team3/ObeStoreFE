@@ -16,6 +16,8 @@ export interface ProductType {
   brand_image: [{ brand_image: string }];
   favorite_count?: number;
   reviews: ProductReviewType[];
+  is_wished: boolean;
+  wishes: number;
 }
 
 export interface ProductCardType
@@ -48,6 +50,8 @@ export interface ProductDetailType
     | 'brand_image'
     | 'favorite_count'
     | 'reviews'
+    | 'is_wished'
+    | 'wishes'
   > {}
 
 export interface ProductCartType
