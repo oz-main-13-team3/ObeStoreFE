@@ -117,7 +117,7 @@ export function CartList() {
         {cartItems.map((product) => (
           <CartCard
             key={product.id}
-            id={Number(product.id)}
+            id={String(product.id)}
             product_name={product.product_name}
             price={product.price}
             product_card_image={
