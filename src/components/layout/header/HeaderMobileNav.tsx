@@ -1,9 +1,9 @@
 import { HEADER_ICONS_LINKS, HEADER_NAV_LINKS, type HeaderIconLinkType } from '@/constants';
-import { useToggleMenuStore } from '@/store';
+import { useToggleStore } from '@/store';
 import { Link } from 'react-router-dom';
 
 export function HeaderMobileNav() {
-  const closeMenu = useToggleMenuStore((state) => state.closeMenu);
+  const closeMenu = useToggleStore((state) => state.closeMenu);
   return (
     <div className='flex flex-col items-center gap-8 text-lg font-black md:hidden'>
       {HEADER_NAV_LINKS.map(({ label, href }) => (

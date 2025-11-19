@@ -30,7 +30,7 @@ export function ProductsPage() {
   if (isError) return <ErrorMessage message='상품을 불러오는 중 오류가 발생했습니다.' />;
 
   return (
-    <main className='p-4'>
+    <main className='bg-primary-100 p-4'>
       <div className='mb-4 flex items-center justify-between'>
         <h1 className='text-xl font-bold'>상품 목록</h1>
         <ProductSort selectedOption={sortOption} onChange={setSortOption} />
