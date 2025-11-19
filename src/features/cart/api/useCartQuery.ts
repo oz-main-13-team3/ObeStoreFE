@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type AxiosResponse } from 'axios';
 import type { CartItem } from '@/types';
 import { backendAPI } from '@/api';
@@ -9,6 +9,7 @@ interface CartResponse {
   price: number;
   total_price: number;
   user: number;
+  subtotal?: number;
 }
 
 const fetchCart = async (): Promise<CartItem[]> => {
@@ -20,10 +21,25 @@ const fetchCart = async (): Promise<CartItem[]> => {
   return carts[0].items ?? [];
 };
 
+const deleteCartItem = async (id: number) => {
+  await backendAPI.delete(`/carts/items/${id}/`);
+};
+
 export const useCartQuery = () => {
   return useQuery<CartItem[]>({
     queryKey: ['cart'],
     queryFn: fetchCart,
     staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useDeleteCartItemMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteCartItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+    },
   });
 };

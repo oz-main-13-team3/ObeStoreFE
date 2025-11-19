@@ -1,6 +1,4 @@
 import { CheckBox } from '@/components/ui';
-// import { usdToKrw } from '@/features/cart/api/currency';
-
 type CartCardProps = {
   id: string;
   product_name: string;
@@ -11,7 +9,7 @@ type CartCardProps = {
   product_card_image?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
-// brandName  // productName // img // quantity
+
 export function CartCard({
   id,
   product_name,
@@ -25,13 +23,7 @@ export function CartCard({
     <>
       <div className='my-2.5 flex flex-row items-start justify-start py-2.5 leading-none'>
         <div>
-          <CheckBox
-            id={id}
-            label=''
-            onChange={onChange}
-            checked={checked ?? false}
-            className='mr-3'
-          />
+          <CheckBox id={id} label='' onChange={onChange} checked={checked} className='mr-3' />
         </div>
         <div className='mr-9 w-[200px]'>
           <img src={product_card_image} className='w-full' alt='' />

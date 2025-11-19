@@ -38,7 +38,7 @@ export interface BackendCartItem {
 }
 
 export interface CartItem {
-  id: string | number;
+  id: number;
   product_name: string;
   price: number;
   amount: number;
@@ -47,6 +47,8 @@ export interface CartItem {
   // FE에서 쓰는 체크박스 상태
   checked: boolean;
   product_card_image: string;
+  subtotal?: number;
+  discount_amount: number;
 }
 
 export interface UserPoint {
