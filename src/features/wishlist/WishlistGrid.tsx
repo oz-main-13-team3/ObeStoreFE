@@ -1,7 +1,7 @@
 import { ProductCard } from '@/features/product';
 import { useWishlistStore } from '@/features/wishlist';
 
-export function FavoriteGrid() {
+export function WishlistGrid() {
   const { wishlistProducts } = useWishlistStore();
 
   return (

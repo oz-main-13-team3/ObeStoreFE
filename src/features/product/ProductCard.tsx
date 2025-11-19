@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ReviewRating } from '@/components/ui';
 import type { ProductCardType } from '@/types';
-import { FavoriteIcon } from '@/features/favorite';
+import { WishlistIcon } from '@/features/wishlist';
 
 interface ProductCardProps {
   product: ProductCardType;
@@ -19,7 +19,7 @@ export function ProductCard({ product }: ProductCardProps) {
             width={300}
             height={400}
           />
-          <FavoriteIcon product={product} className='absolute right-4 bottom-4' />
+          <WishlistIcon product={product} className='absolute right-4 bottom-4' />
         </div>
 
         <div className='flex h-20 w-full grow flex-col justify-evenly gap-2 text-left text-xs'>

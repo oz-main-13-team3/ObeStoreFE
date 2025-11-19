@@ -3,7 +3,7 @@ import {
   AboutPage,
   CallbackPage,
   CartPage,
-  FavoritesPage,
+  WishlistPage,
   MainPage,
   MyPage,
   MyPageAddressInfo,
@@ -41,7 +41,7 @@ export function Router() {
             <Route path='/order/result' element={<OrderResult />} />
             <Route path='/order/complete' element={<OrderComplete />} />
             {/* <Route element={<ProtectedRoute />}> </Route> */}
-            <Route path='/users/favorites' element={<FavoritesPage />} />
+            <Route path='/users/wishlist' element={<WishlistPage />} />
             <Route path='/users/cart' element={<CartPage />} />
             <Route path='/users' element={<MyPageLayout />}>
               <Route index element={<MyPage />} />
