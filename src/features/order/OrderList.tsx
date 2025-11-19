@@ -11,8 +11,6 @@ export function OrderList() {
   const { data: cartItems = [], isLoading: isLoadingCart, isError: isErrorCart } = useCartQuery();
   const { orderItems } = useOrderStore();
 
-  console.log('orderItems', orderItems);
-
   const { data: point } = useUserPointsQuery();
   const [deliveryRequest, setDeliveryRequest] = useState('');
   const [availablePoints, setAvailablePoints] = useState(0);
