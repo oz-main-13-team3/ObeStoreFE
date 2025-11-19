@@ -1,8 +1,7 @@
 import { create } from 'zustand';
 
 type ToggleState = {
-  isMenuOpen: boolean;
-  isSortOpen: boolean;
+  isOpen: boolean;
   openMenu: () => void;
   closeMenu: () => void;
   toggleMenu: () => void;
@@ -12,12 +11,11 @@ type ToggleState = {
 };
 
 export const useToggleStore = create<ToggleState>((set) => ({
-  isMenuOpen: false,
-  isSortOpen: false,
-  openMenu: () => set({ isMenuOpen: true }),
-  closeMenu: () => set({ isMenuOpen: false }),
-  toggleMenu: () => set((state) => ({ isMenuOpen: !state.isMenuOpen })),
-  openSort: () => set({ isSortOpen: true }),
-  closeSort: () => set({ isSortOpen: false }),
-  toggleSort: () => set((state) => ({ isSortOpen: !state.isSortOpen })),
+  isOpen: false,
+  openMenu: () => set({ isOpen: true }),
+  closeMenu: () => set({ isOpen: false }),
+  toggleMenu: () => set((state) => ({ isOpen: !state.isOpen })),
+  openSort: () => set({ isOpen: true }),
+  closeSort: () => set({ isOpen: false }),
+  toggleSort: () => set((state) => ({ isOpen: !state.isOpen })),
 }));
