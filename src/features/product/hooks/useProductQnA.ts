@@ -25,15 +25,11 @@ export function useGetProductQnA(productId: number) {
   return useQuery({
     queryKey: ['productQnA', productId],
     queryFn: async () => {
-      const res = await backendAPI.get(`/products/${productId}/qna`);
-      
-      const data = res.data?.map((item: any) => ({
-        ...item,
-        question_type: TYPE_MAP_REVERSE[item.question_type] || item.question_type
-      })) ?? [];
-      
-      return data;
+      const res = await backendAPI.get(`/products/${productId}/qna/`);
+      return res.data ?? [];
     },
+    staleTime: 0,
+    gcTime: 0,
   });
 }
 
@@ -42,21 +38,16 @@ export function useCreateQnA(productId: number) {
 
   return useMutation({
     mutationFn: async (data: QnAFormData) => {
-      const requestData = {
-        question_type: TYPE_MAP[data.question_type] || 'inquiry',
-        question_title: data.question_title,
-        question_content: data.question_content,
-        product: Number(productId)
-      };
-
-      const res = await backendAPI.post('/qna', requestData);
+      const res = await backendAPI.post('/qna', {
+        ...data,
+        product_id: productId
+      });
       return res.data;
     },
     onSuccess: async () => {
-      await new Promise(resolve => setTimeout(resolve, 500));
       await queryClient.refetchQueries({
         queryKey: ['productQnA', productId],
-        exact: true
+        exact: true,
       });
     },
   });
@@ -75,11 +66,8 @@ export function useUpdateQnA(productId: number) {
       return res.data;
     },
     onSuccess: async () => {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      await queryClient.refetchQueries({
-        queryKey: ['productQnA', productId],
-      });
-    },
+      await queryClient.refetchQueries({ queryKey: ['productQnA', productId] });
+    }
   });
 }
 
@@ -109,10 +97,7 @@ export function useAnswerQnA(productId: number) {
       return res.data;
     },
     onSuccess: async () => {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      await queryClient.refetchQueries({
-        queryKey: ['productQnA', productId],
-      });
-    },
+      await queryClient.refetchQueries({ queryKey: ['productQnA', productId] });
+    }
   });
 }
