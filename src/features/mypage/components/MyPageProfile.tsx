@@ -1,19 +1,31 @@
 import { UserProfileIcon } from '@/components/icon';
-import { ErrorMessage, Spinner } from '@/components/ui';
-import { useUserQuery } from '@/features/mypage';
+import { useAuthStore } from '@/features/auth';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export function MyPageProfile() {
-  const { data: user, isLoading, error } = useUserQuery();
+  const user = useAuthStore((state) => state.user);
 
-  if (isLoading) return <Spinner />;
-  if (error) return <ErrorMessage />;
+  const [ready, setReady] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (hydrated) {
+      setReady(true);
+    }
+  }, [hydrated, user]);
+
+  if (!ready) return null;
+  if (!user) return <p className='p-8'>로그인 해주세요</p>;
 
   return (
-    <div className='p-4 lg:p-8'>
+    <div className='p-8'>
       <Link to='/users' className='flex items-center gap-4'>
         <UserProfileIcon />
-        <p className='text-lg font-bold'>{user?.nickname}</p>
+        <p className='text-lg font-bold'>{user.nickname}</p>
       </Link>
     </div>
   );

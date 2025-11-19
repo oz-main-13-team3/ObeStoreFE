@@ -1,4 +1,5 @@
-import { authLogin, authSignup, authLogout } from '@/features/auth';
+import { backendAPI } from '@/api';
+import { authLogin, authSignup, authLogout, API_ENDPOINTS } from '@/features/auth';
 import { useFavoriteStore } from '@/features/favorite';
 import { useRewardStore } from '@/features/reward/store';
 import type { NavigateFunction } from 'react-router-dom';
@@ -36,8 +37,11 @@ export const useAuthStore = create<AuthState>()(
           await authSignup(data);
         },
         login: async (email, password) => {
-          const { access, user } = await authLogin({ email, password });
-          set({ access, user });
+          const { access } = await authLogin({ email, password });
+          set({ access });
+
+          const user = await backendAPI.get(API_ENDPOINTS.USER).then((res) => res.data);
+          set({ user });
         },
         logout: async (navigate) => {
           try {

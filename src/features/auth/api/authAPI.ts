@@ -1,15 +1,13 @@
 import { backendAPI } from '@/api';
-import { API_ENDPOINTS, useAuthStore } from '@/features/auth';
+import { API_ENDPOINTS } from '@/features/auth';
 
 export const authLogin = async (data: { email: string; password: string }) => {
-  const res = await backendAPI.post(API_ENDPOINTS.LOGIN, data);
-  const { access, user } = res.data;
-
-  const store = useAuthStore.getState();
-  store.setToken(access);
-  store.setUser(user);
-
-  return res.data;
+  try {
+    const res = await backendAPI.post(API_ENDPOINTS.LOGIN, data);
+    return res.data;
+  } catch (err) {
+    throw err;
+  }
 };
 
 export const authSignup = (data: {
