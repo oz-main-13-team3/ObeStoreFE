@@ -3,13 +3,15 @@ import type { CartItem } from '@/types';
 import { backendAPI } from '@/api';
 
 const fetchCart = async (): Promise<CartItem[]> => {
-  const { data } = await backendAPI.get('/carts');
+  const { data } = await backendAPI.get('/carts/');
+  console.log(data);
   if (!Array.isArray(data) || data.length === 0) return [];
   return data[0].items ?? [];
 };
 
 const deleteCartItem = async (id: number) => {
-  await backendAPI.delete(`/carts/items/${id}/`);
+  await backendAPI.delete(`/carts/items/${id.toString()}/`);
+  console.log(`${id}`);
 };
 
 export const useCartQuery = () => {
@@ -25,8 +27,8 @@ export const useDeleteCartItemMutation = () => {
 
   return useMutation({
     mutationFn: deleteCartItem,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
   });
 };
