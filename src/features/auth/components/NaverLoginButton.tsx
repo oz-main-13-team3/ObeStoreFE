@@ -3,7 +3,7 @@ import { naverIcon } from '@/assets';
 
 export function NaverLoginButton() {
   const handleLogin = () => {
-    const NAVER_LOGIN_URL = `${import.meta.env.VITE_API_URL}/auth/naver/login?redirect_uri=${encodeURIComponent('https://www.obestore.o-r.kr/auth/naver/callback/')}`;
+    const NAVER_LOGIN_URL = `${import.meta.env.VITE_API_URL}/auth/naver/login?redirect_uri=${encodeURIComponent('https://obe-store.vercel.app/auth/naver/callback')}`;
     window.location.href = NAVER_LOGIN_URL;
   };
 
