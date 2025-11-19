@@ -2,19 +2,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { SORT_OPTIONS } from '@/constants';
 import { useToggleStore } from '@/store';
+import { useProductFilterStore } from '@/features/product';
 
 type SortOptionType = string;
 
 interface ProductSortProps {
   selectedOption: SortOptionType;
-  onChange: (value: SortOptionType) => void;
 }
 
-export function ProductSort({ selectedOption, onChange }: ProductSortProps) {
+export function ProductSort({ selectedOption }: ProductSortProps) {
   const { isSortOpen, toggleSort, closeSort } = useToggleStore();
+  const { sort, setSort } = useProductFilterStore();
 
   const selectedOptionLabel =
-    SORT_OPTIONS.find((option) => option.value === selectedOption)?.label || SORT_OPTIONS[0].label;
+    SORT_OPTIONS.find((option) => option.value === sort)?.label || SORT_OPTIONS[0].label;
 
   return (
     <div className='relative inline-block w-40'>
@@ -40,7 +41,7 @@ export function ProductSort({ selectedOption, onChange }: ProductSortProps) {
                   selectedOption === option.value ? 'text-primary-700 font-bold' : ''
                 }`}
                 onClick={() => {
-                  onChange(option.value);
+                  setSort(option.value);
                   closeSort();
                 }}
               >
