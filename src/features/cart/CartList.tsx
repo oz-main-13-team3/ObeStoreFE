@@ -29,11 +29,22 @@ export function CartList() {
     }
   };
 
-  const removeCheckedItems = () => {
-    setSelectedItems((prev) => prev.filter((id) => !selectedItems.includes(id)));
-    selectedItems.forEach((id) => {
-      deleteItem(id);
-    });
+  const removeCheckedItems = async () => {
+    // 먼저, 삭제할 항목들의 ID를 추출
+    const itemsToDelete = [...selectedItems];
+
+    // 삭제 항목들의 id를 순차적으로 처리
+    for (const id of itemsToDelete) {
+      try {
+        await deleteItem(id); // deleteItem을 비동기적으로 처리
+        console.log(`Item with id ${id} deleted successfully`);
+      } catch (error) {
+        console.error(`Failed to delete item with id ${id}:`, error);
+      }
+    }
+
+    // 삭제가 완료되면 선택된 항목 초기화
+    setSelectedItems([]); // 상태 초기화
   };
 
   useEffect(() => {
@@ -106,7 +117,7 @@ export function CartList() {
         {cartItems.map((product) => (
           <CartCard
             key={product.id}
-            id={String(product.id)}
+            id={Number(product.id)}
             product_name={product.product_name}
             price={product.price}
             product_card_image={

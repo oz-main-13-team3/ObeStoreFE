@@ -1,6 +1,6 @@
 import { CheckBox } from '@/components/ui';
 type CartCardProps = {
-  id: string;
+  id: number;
   product_name: string;
   price: number;
   amount: number;
@@ -40,16 +40,10 @@ export function CartCard({
   );
 }
 
-export function CartCardNone({
-  id,
-  product_name,
-  price,
-  amount,
-  product_card_image,
-}: CartCardProps) {
+export function CartCardNone({ product_name, price, amount, product_card_image }: CartCardProps) {
   return (
     <>
-      <div className='my-2.5 flex flex-row items-start justify-start py-2.5 leading-none' id={id}>
+      <div className='my-2.5 flex flex-row items-start justify-start py-2.5 leading-none'>
         <div className='mr-9 w-[200px]'>
           <img src={product_card_image} className='w-full' alt='' />
         </div>

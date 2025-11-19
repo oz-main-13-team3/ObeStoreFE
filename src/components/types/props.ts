@@ -49,7 +49,7 @@ export interface SearchProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export interface CheckboxProps {
-  id: string;
+  id: string | number;
   label: string;
   checked: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -99,7 +99,7 @@ export interface SearchProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export interface CheckboxProps {
-  id: string;
+  id: number | string;
   label: string;
   checked: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
