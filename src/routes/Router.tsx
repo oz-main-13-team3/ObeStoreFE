@@ -42,8 +42,8 @@ export function Router() {
             <Route path='/users/cart' element={<CartPage />} />
             <Route path='/users' element={<MyPageLayout />}>
               <Route index element={<MyPage />} />
-              <Route path='orderdetail' element={<MyPageOrderDetail />} />
-              <Route path='orderinfo' element={<MyPageOrderInfo />} />
+              <Route path='orders' element={<MyPageOrderInfo />} /> 
+              <Route path='orders/:orderId' element={<MyPageOrderDetail />} /> 
               <Route path='addressinfo' element={<MyPageAddressInfo />} />
               <Route path='info' element={<MyPageInfo />} />
             </Route>

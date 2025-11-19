@@ -8,7 +8,7 @@ export function MypageNav() {
   const location = useLocation();
   const isOrderActive = () => {
     const path = location.pathname;
-    return path.startsWith('/users/orderinfo') || path.startsWith('/users/orderdetail');
+    return path.startsWith('/users/orders');
   };
 
   const handleLogout = async () => {
@@ -21,7 +21,7 @@ export function MypageNav() {
       <ul className='flex w-full flex-1 flex-col gap-4 lg:gap-8'>
         <li>
           <NavLink
-            to='/users/orderinfo'
+            to='/users/orders'
             className={() =>
               `text-primary-500-90 flex font-bold lg:text-lg ${
                 isOrderActive() ? 'text-secondary-300 font-semibold' : 'text-gray-500'

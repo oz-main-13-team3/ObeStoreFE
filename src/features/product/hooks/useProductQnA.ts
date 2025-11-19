@@ -40,6 +40,7 @@ export function useGetProductQnA(productId: number) {
 export function useCreateQnA(productId: number) {
   const queryClient = useQueryClient();
 
+
   return useMutation({
     mutationFn: async (data: QnAFormData) => {
       const requestData = {
@@ -64,6 +65,7 @@ export function useCreateQnA(productId: number) {
 
 export function useUpdateQnA(productId: number) {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({ qnaId, data }: { qnaId: number; data: QnAFormData }) => {
       const requestData = {
@@ -71,6 +73,7 @@ export function useUpdateQnA(productId: number) {
         question_title: data.question_title,
         question_content: data.question_content,
       };
+      
       const res = await backendAPI.patch(`/qna/${qnaId}`, requestData);
       return res.data;
     },
@@ -85,6 +88,7 @@ export function useUpdateQnA(productId: number) {
 
 export function useDeleteQnA(productId: number) {
   const queryClient = useQueryClient();
+
 
   return useMutation({
     mutationFn: async (qnaId: number) => {
