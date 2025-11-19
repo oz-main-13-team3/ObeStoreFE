@@ -18,10 +18,13 @@ import { MyPageLayout, RootLayout } from '@/components/layout';
 import { OrderComplete, OrderFail } from '@/features/order';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { OrderResult } from '@/features/order/OrderResult';
+import { useSyncWishlist } from '@/features/wishlist';
 // import { ProtectedRoute } from '@/routes';
 
 export function Router() {
   const queryClient = new QueryClient();
+  useSyncWishlist();
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
@@ -42,8 +45,8 @@ export function Router() {
             <Route path='/users/cart' element={<CartPage />} />
             <Route path='/users' element={<MyPageLayout />}>
               <Route index element={<MyPage />} />
-              <Route path='orders' element={<MyPageOrderInfo />} /> 
-              <Route path='orders/:orderId' element={<MyPageOrderDetail />} /> 
+              <Route path='orders' element={<MyPageOrderInfo />} />
+              <Route path='orders/:orderId' element={<MyPageOrderDetail />} />
               <Route path='addressinfo' element={<MyPageAddressInfo />} />
               <Route path='info' element={<MyPageInfo />} />
             </Route>
