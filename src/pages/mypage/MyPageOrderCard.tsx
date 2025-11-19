@@ -1,63 +1,79 @@
-import type { Order, OrderProductDetail } from '@/types/order';
-import { ORDER_STATUS_CONFIG } from '@/constants/orderStatus';
+import { useNavigate } from 'react-router-dom';
+import { ORDER_STATUS_LABEL, type Order } from '@/types/order';
+import { useState } from 'react';
 
-interface MyPageOrderCardProps {
-  order: Order;
-  products: OrderProductDetail[];
-  onClick?: (orderId: string) => void;
+interface Props { 
+  order: Order; 
 }
 
-export function MyPageOrderCard({ order, products, onClick }: MyPageOrderCardProps) {
-  const statusInfo = ORDER_STATUS_CONFIG[order.order_status] || { 
-    label: order.order_status, 
-    color: 'bg-gray-500' 
+export default function MyPageOrderCard({ order }: Props) {
+  const navigate = useNavigate();
+  const firstItem = order.order_products_detail[0];
+  const additionalCount = order.order_products_detail.length - 1;
+  const [imageError, setImageError] = useState(false);
+
+  const handleDetailClick = () => {
+    navigate(`/users/orders/${order.id}`);
   };
-  const totalAmount = products.reduce((sum, p) => sum + p.total_price, 0);
+
+  const imageUrl = firstItem.product_image && !imageError
+    ? firstItem.product_image 
+    : 'https://via.placeholder.com/150?text=No+Image';
+
+  const handleImageError = () => {
+    if (!imageError) {
+      setImageError(true);
+    }
+  };
 
   return (
-    <div
-      onClick={() => onClick?.(order.id.toString())}
-      className={`border rounded-lg p-4 transition-shadow ${onClick ? 'cursor-pointer hover:shadow-md' : ''}`}
-    >
-      <div className="flex justify-between items-center mb-3 pb-3 border-b">
+    <div className="border border-stone-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+      <div className="flex justify-between items-start mb-4">
         <div>
-          <span className="text-sm font-semibold">{order.created_at}</span>
-          <span className="text-xs text-gray-500 ml-3">주문번호: {order.order_number}</span>
+          <div className="text-sm text-stone-500 mb-1">
+            {new Date(order.created_at).toLocaleDateString('ko-KR')}
+          </div>
+          <div className="text-xs text-stone-400">
+            주문번호: {order.order_number}
+          </div>
         </div>
-        <span className={`px-3 py-1 text-white text-xs rounded-full ${statusInfo.color}`}>
-          {statusInfo.label}
-        </span>
+        <div className="px-3 py-1 bg-stone-100 rounded text-sm font-medium">
+          {ORDER_STATUS_LABEL[order.order_status] || order.order_status}
+        </div>
       </div>
 
-      {products.length > 0 && (
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-gray-100 rounded shrink-0 overflow-hidden">
-            {products[0].product_image ? (
-              <img 
-                src={products[0].product_image} 
-                alt={products[0].product_name}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
-                No Image
-              </div>
+      <div className="flex gap-4">
+        <img
+          src={imageUrl}
+          alt={firstItem.product_name}
+          className="w-24 h-24 object-cover rounded bg-stone-100"
+          onError={handleImageError}
+        />
+        <div className="flex-1">
+          <div className="font-medium mb-1">
+            {firstItem.product_name}
+            {additionalCount > 0 && (
+              <span className="text-stone-500 text-sm ml-2">
+                외 {additionalCount}개
+              </span>
             )}
           </div>
-          <div className="flex-1">
-            <p className="text-sm font-medium mb-1">
-              {products[0].product_name}
-            </p>
-            <p className="text-xs text-gray-500">
-              {products[0].amount}개
-              {products.length > 1 && ` 외 ${products.length - 1}개`}
-            </p>
-          </div>
-          <div className="text-right">
-            <p className="text-sm font-bold">{totalAmount.toLocaleString()}원</p>
+          <div className="text-sm text-stone-600">
+            {firstItem.amount}개 · {firstItem.price.toLocaleString()}원
           </div>
         </div>
-      )}
+      </div>
+
+      <div className="mt-4 pt-4 border-t flex justify-between items-center">
+        <div className="text-lg font-semibold">
+          결제 금액 {order.total_payment.toLocaleString()}원
+        </div>
+        <button
+          onClick={handleDetailClick}
+          className="px-4 py-2 border border-stone-300 rounded hover:bg-stone-50 transition-colors">
+          주문 상세
+        </button>
+      </div>
     </div>
   );
 }

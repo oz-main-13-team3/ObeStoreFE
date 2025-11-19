@@ -91,3 +91,17 @@ export interface OrderEnd {
   used_point: number;
   user: number;
 }
+
+export const ORDER_STATUS_LABEL: Record<string, string> = {
+  pending: '결제완료',
+  confirmed: '배송준비중',
+  shipping: '배송중',
+  delivered: '배송완료',
+  cancelled: '취소/반품',
+};
+
+export const DELIVERY_STATUS_LABEL: Record<string, string> = {
+  pending: '배송준비중',
+  shipping: '배송중',
+  delivered: '배송완료',
+};
