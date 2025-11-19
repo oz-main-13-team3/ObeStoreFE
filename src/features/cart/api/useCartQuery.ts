@@ -10,7 +10,7 @@ const fetchCart = async (): Promise<CartItem[]> => {
 };
 
 const deleteCartItem = async (id: number) => {
-  await backendAPI.delete(`/carts/items/${id.toString()}/`);
+  await backendAPI.delete(`/carts/items/${id}/`);
   console.log(`${id}`);
 };
 
