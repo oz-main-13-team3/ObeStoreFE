@@ -11,7 +11,7 @@ interface ProductSortProps {
 }
 
 export function ProductSort({ selectedOption, onChange }: ProductSortProps) {
-  const { isOpen, toggleSort, closeSort } = useToggleStore();
+  const { isSortOpen, toggleSort, closeSort } = useToggleStore();
 
   const selectedOptionLabel =
     SORT_OPTIONS.find((option) => option.value === selectedOption)?.label || SORT_OPTIONS[0].label;
@@ -26,7 +26,7 @@ export function ProductSort({ selectedOption, onChange }: ProductSortProps) {
         <RiArrowDropDownLine size={20} />
       </button>
       <AnimatePresence>
-        {isOpen && (
+        {isSortOpen && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
