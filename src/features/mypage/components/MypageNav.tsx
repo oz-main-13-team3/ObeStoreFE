@@ -12,7 +12,11 @@ export function MypageNav() {
   };
 
   const handleLogout = async () => {
-    await logout(navigate);
+    try {
+      await logout(navigate);
+    } catch (err) {
+      console.error('로그아웃 에러:', err);
+    }
   };
 
   return (
