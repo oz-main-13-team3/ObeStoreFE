@@ -38,7 +38,6 @@ export interface CreateOrderPayload {
   delivery_amount?: number;
   delivery_request: string;
 
-  // ⭐ [테스트용 임시 필드] 추가 ⭐
   subtotal?: number;
   total_payment?: number;
   order_items?: {
@@ -62,16 +61,3 @@ export const useCreateOrderMutation = () => {
     },
   });
 };
-
-// export const fetchOrderDetail = async (orderId: number) => {
-//   const response = await backendAPI.get(`/orders/${orderId}/`);
-//   console.log('📦 [GET] /orders/{id} 응답:', response.data);
-//   return response.data;
-// };
-
-// export const useOrderDetailQuery = (orderId: number) =>
-//   useQuery({
-//     queryKey: ['orderDetail', orderId],
-//     queryFn: () => fetchOrderDetail(orderId),
-//     enabled: !!orderId, // ⚠️ orderId가 있을 때만 실행
-//   });
