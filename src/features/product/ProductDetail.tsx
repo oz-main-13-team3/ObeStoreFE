@@ -41,7 +41,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
   const tabs = [
     { id: 'info', label: '상품 정보' },
-    { id: 'review', label: '리뷰(구매후기)' },
+    { id: 'review', label: '리뷰' },
     { id: 'exchange', label: '교환/환불' },
     { id: 'shipping', label: '배송 안내' },
     { id: 'qna', label: '상품 Q&A' },
@@ -93,10 +93,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
           </div>
 
           <div className='border-primary-500-40 space-y-4 border-t border-b py-4'>
-            <div className='rounded bg-gray-50 px-3 py-2'>
-              <span className='text-sm font-medium text-gray-700'>FREE</span>
-            </div>
-
+            <div className='rounded bg-gray-50 px-3 py-2'></div>
             <div className='flex items-center justify-between'>
               <div className='flex items-center gap-2'>
                 <button
@@ -126,7 +123,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
               </div>
             </div>
           </div>
-          <div className='text-custom-gray-60'>결제액 5만원 이상시 무료, 미만시 배송비 3,500원</div>
+          <div className='text-custom-gray-60'>결제 금액 5만원 이상시 무료, 미만시 배송비 3,500원</div>
           <div className='flex items-center justify-between py-2'>
             <span className='text-base text-gray-600'>총 {quantity}개</span>
             <span className='text-2xl font-bold text-gray-900'>
@@ -220,14 +217,14 @@ export function ProductDetail({ product }: ProductDetailProps) {
           <div className='border-primary-500-40 rounded-lg border bg-white p-6'>
             <h3 className='text-primary-500-90 mb-4 text-lg font-bold'>배송 안내</h3>
             <div className='text-primary-500-80 space-y-2 text-sm'>
-              <p>• 배송비: 무료배송</p>
+              <p>• 배송비: 결제 금액 5만원 이상 시 무료배송, 미만 시 3500원</p>
               <p>• 배송 기간: 주문 후 2-3일 소요</p>
               <p>• 제주도 및 도서산간 지역은 추가 배송비가 발생할 수 있습니다.</p>
             </div>
           </div>
         )}
 
-        {activeTab === 'qna' && <ProductQnA product={product} />}
+        {activeTab === 'qna' && <ProductQnA productId={product.id} />}
       </div>
     </article>
   );

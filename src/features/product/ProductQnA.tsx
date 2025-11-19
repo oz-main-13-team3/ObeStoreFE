@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import type { ProductDetailType } from '@/types';
 import { useGetProductQnA, useCreateQnA, useUpdateQnA, useDeleteQnA, useAnswerQnA } from '@/features/product/hooks/useProductQnA';
 import { useAuthStore } from '@/features/auth';
 
 interface ProductQnAProps {
-  product: ProductDetailType;
+  productId: number;
 }
 
 interface QnAItem {
@@ -21,7 +20,7 @@ interface QnAItem {
 
 const questionTypes = ['상품', '배송', '반품/교환', '기타'] as const;
 
-export function ProductQnA({ product }: ProductQnAProps) {
+export function ProductQnA({ productId }: ProductQnAProps) {
   const currentUser = useAuthStore((state) => state.user);
   const isAdmin = currentUser?.is_admin;
   const [isWriting, setIsWriting] = useState(false);
@@ -30,11 +29,11 @@ export function ProductQnA({ product }: ProductQnAProps) {
   const [answerEditingId, setAnswerEditingId] = useState<number | null>(null);
   const [formData, setFormData] = useState({question_type: '상품', question_title: '', question_content: ''});
   const [answerForm, setAnswerForm] = useState({question_answer: ''});
-  const { data: qnaList = [], isLoading } = useGetProductQnA(product.id);
-  const createMutation = useCreateQnA(product.id);
-  const updateMutation = useUpdateQnA(product.id);
-  const deleteMutation = useDeleteQnA(product.id);
-  const answerMutation = useAnswerQnA(product.id);
+  const { data: qnaList, isLoading } = useGetProductQnA(productId);
+  const createMutation = useCreateQnA(productId);
+  const updateMutation = useUpdateQnA(productId);
+  const deleteMutation = useDeleteQnA(productId);
+  const answerMutation = useAnswerQnA(productId);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
