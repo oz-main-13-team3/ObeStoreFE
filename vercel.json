@@ -1,10 +1,21 @@
 {
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Vercel-Json-Status",
+          "value": "File-Read-Successfully"
+        }
+      ]
+    }
+  ],
   "rewrites": [
+    { "source": "/auth/naver/callback", "destination": "/" },
+    { "source": "/auth/naver/callback/", "destination": "/" },
     {
       "source": "/(.*)",
       "destination": "/index.html"
-    },
-    { "source": "/auth/naver/callback", "destination": "/" },
-    { "source": "/auth/naver/callback/", "destination": "/" }
+    }
   ]
 }
