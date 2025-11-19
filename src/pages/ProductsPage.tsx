@@ -9,7 +9,7 @@ export function ProductsPage() {
   const query = searchParams.get('q') ?? '';
   const { searchTerm, setSearchTerm, isOpenSearchModal } = useSearchStore();
   const category = searchParams.get('category') ?? undefined;
-  const [sortOption, setSortOption] = useState('');
+  const [sortOption] = useState('');
 
   useEffect(() => {
     if (isOpenSearchModal) return;
