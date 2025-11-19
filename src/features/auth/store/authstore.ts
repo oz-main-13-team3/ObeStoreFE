@@ -1,6 +1,6 @@
 import { backendAPI } from '@/api';
 import { authLogin, authSignup, authLogout, API_ENDPOINTS } from '@/features/auth';
-import { useFavoriteStore } from '@/features/favorite';
+import { useWishlistStore } from '@/features/wishlist';
 import { useRewardStore } from '@/features/reward/store';
 import type { NavigateFunction } from 'react-router-dom';
 import { create } from 'zustand';
@@ -50,7 +50,7 @@ export const useAuthStore = create<AuthState>()(
             console.error('로그아웃 API 호출 실패:', error);
           } finally {
             set({ access: null, user: null });
-            useFavoriteStore.getState().reset();
+            useWishlistStore.getState().reset();
             useRewardStore.getState().resetReward();
             navigate('/');
           }
