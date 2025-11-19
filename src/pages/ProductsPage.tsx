@@ -33,7 +33,7 @@ export function ProductsPage() {
     <main className='bg-primary-100 p-4'>
       <div className='mb-4 flex items-center justify-between'>
         <h1 className='text-xl font-bold'>상품 목록</h1>
-        <ProductSort selectedOption={sortOption} onChange={setSortOption} />
+        <ProductSort selectedOption={sortOption} />
       </div>
       {products && products.length > 0 ? (
         <ProductGrid products={products} />
