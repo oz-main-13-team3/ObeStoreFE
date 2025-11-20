@@ -19,8 +19,6 @@ export function MyPageProfile() {
   }, [hydrated, user]);
 
   if (!ready) return null;
-  if (!user) return <p className='p-8'>로그인 해주세요</p>;
-
   return (
     <div className='p-8'>
       <Link to='/users' className='flex items-center gap-4'>
