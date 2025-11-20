@@ -41,7 +41,7 @@ export function useWishlistMutations() {
   });
 
   const remove = useMutation({
-    mutationFn: (productId: number) => removeFromWishlist(productId),
+    mutationFn: (wishlistItemId: number) => removeFromWishlist(wishlistItemId),
     onSuccess: invalidateWishlist,
   });
 
