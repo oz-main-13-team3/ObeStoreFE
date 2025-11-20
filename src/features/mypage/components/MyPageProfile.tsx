@@ -19,7 +19,7 @@ export function MyPageProfile() {
   }, [hydrated, user]);
 
   if (!ready) return null;
-  if (!user) return;
+  if (!user) return <div className='m-4'></div>;
   return (
     <div className='p-8'>
       <Link to='/users' className='flex items-center gap-4'>

@@ -9,7 +9,7 @@ export function RootLayout() {
     <div className='flex min-h-screen w-full flex-col items-center'>
       <Header />
       <GlobalModalManager />
-      <main className='container-1200 grow pt-16'>
+      <main className='container-1200 min-h-screen grow pt-16'>
         <Outlet />
       </main>
       <Footer />
