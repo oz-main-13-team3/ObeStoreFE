@@ -1,15 +1,20 @@
-import { ProductGrid, ProductSort, useProductsQuery } from '@/features/product';
+import {
+  ProductGrid,
+  ProductSort,
+  useProductFilterStore,
+  useProductsQuery,
+} from '@/features/product';
 import { ErrorMessage, Spinner } from '@/components/ui';
 import { useSearchStore } from '@/features/search';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 export function ProductsPage() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') ?? '';
   const { searchTerm, setSearchTerm, isOpenSearchModal } = useSearchStore();
+  const { sort } = useProductFilterStore();
   const category = searchParams.get('category') ?? undefined;
-  const [sortOption] = useState('');
 
   useEffect(() => {
     if (isOpenSearchModal) return;
@@ -21,7 +26,7 @@ export function ProductsPage() {
     isLoading,
     isError,
   } = useProductsQuery({
-    sortOption,
+    sortOption: sort,
     category,
     searchTerm,
   });
@@ -33,7 +38,7 @@ export function ProductsPage() {
     <main className='bg-primary-100 p-4'>
       <div className='mb-4 flex items-center justify-between'>
         <h1 className='text-xl font-bold'>상품 목록</h1>
-        <ProductSort selectedOption={sortOption} />
+        <ProductSort />
       </div>
       {products && products.length > 0 ? (
         <ProductGrid products={products} />

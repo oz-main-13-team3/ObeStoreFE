@@ -4,13 +4,7 @@ import { SORT_OPTIONS } from '@/constants';
 import { useToggleStore } from '@/store';
 import { useProductFilterStore } from '@/features/product';
 
-type SortOptionType = string;
-
-interface ProductSortProps {
-  selectedOption: SortOptionType;
-}
-
-export function ProductSort({ selectedOption }: ProductSortProps) {
+export function ProductSort() {
   const { isSortOpen, toggleSort, closeSort } = useToggleStore();
   const { sort, setSort } = useProductFilterStore();
 
@@ -38,7 +32,7 @@ export function ProductSort({ selectedOption }: ProductSortProps) {
               <div
                 key={option.value}
                 className={`hover:bg-primary-500-60/10 cursor-pointer px-3 py-2 text-sm ${
-                  selectedOption === option.value ? 'text-primary-700 font-bold' : ''
+                  sort === option.value ? 'text-primary-700 font-bold' : ''
                 }`}
                 onClick={() => {
                   setSort(option.value);
