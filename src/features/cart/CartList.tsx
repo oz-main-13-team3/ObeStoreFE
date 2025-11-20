@@ -44,12 +44,6 @@ export function CartList() {
     const newItems: CartItem[] = cartItems.map((product) => ({
       id: product.id,
       product_name: product.product_name ?? 'none',
-      // images:
-      //   typeof product.images === 'string'
-      //     ? product.images
-      //     : Array.isArray(product.images)
-      //       ? product.images[0]
-      //       : (product.images ?? 'http://placehold.co/200x200'),
       price: Math.floor(product.price),
       amount: product.amount ?? 0,
       cart: product.cart,
@@ -62,7 +56,7 @@ export function CartList() {
   }, [cartItems, setCartItems]);
 
   const handlePurchase = () => {
-    const selectedItems = storeItems.filter((item: any) => item.checked);
+    const selectedItems = storeItems.filter((item) => item.checked);
     if (storeItems.length === 0) return alert('상품을 선택해주세요!');
     setOrderInfo(
       selectedItems,
