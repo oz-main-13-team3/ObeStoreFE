@@ -43,8 +43,8 @@ export const HEADER_ICONS_LINKS: HeaderIconLinkType[] = [
   },
   {
     type: 'link',
-    href: '/users/favorites',
-    label: 'FAVORITES',
+    href: '/users/wishlist',
+    label: 'WISHLIST',
     Icon: EmptyHeartIcon,
     responsiveClass: 'mobile-hidden',
   },
