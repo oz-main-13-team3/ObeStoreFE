@@ -1,4 +1,4 @@
-import { CartCard, useCartQuery } from '@/features/cart';
+import { CartCard, useCartQuery, useDeleteCartItemMutation } from '@/features/cart';
 import type { CartItem } from '@/types';
 import { CheckBox, ButtonBase } from '@/components/ui';
 import { useNavigate } from 'react-router-dom';
@@ -30,11 +30,11 @@ export function CartList() {
     setCartItems,
     handleSelectAll,
     handleItemCheck,
-    removeCheckedItems,
+    // removeCheckedItems,
   } = useCartStore();
 
   const { setEarnedPoints } = useRewardStore();
-
+  const { mutateAsync: deleteCartItem } = useDeleteCartItemMutation();
   useEffect(() => {
     setEarnedPoints(rewardPoints);
   }, [rewardPoints, setEarnedPoints]);
@@ -69,6 +69,21 @@ export function CartList() {
     navigate('/order/order');
   };
 
+  const handleRemoveCheckedItems = async () => {
+    const selectedItems = storeItems.filter((item) => item.checked);
+
+    if (selectedItems.length === 0) {
+      return alert('삭제할 상품을 선택해주세요!');
+    }
+
+    // 삭제 요청을 순차적으로 처리
+    for (const item of selectedItems) {
+      await deleteCartItem(item.id); // delete 요청
+    }
+
+    alert('선택된 상품이 삭제되었습니다!');
+  };
+
   console.log(cartItems); // 👈 API 구조 확인용
 
   if (isLoading) return <div>장바구니 정보를 불러오는 중입니다...</div>;
@@ -86,7 +101,7 @@ export function CartList() {
             onChange={(e) => handleSelectAll(e.target.checked)}
             className='pdr-3 text-base'
           />
-          <ButtonBase onClick={removeCheckedItems} variant='gnb'>
+          <ButtonBase onClick={handleRemoveCheckedItems} variant='gnb'>
             선택 삭제
           </ButtonBase>
         </div>
