@@ -90,7 +90,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
 
       const tossPayments = await loadTossPayments(clientKey);
       const cleanPhone = (customerMobilePhone || '').replace(/\D/g, '');
-      await tossPayments.requestPayment('TOSSPAY', {
+      await tossPayments.requestPayment('CARD', {
         amount,
         orderId,
         orderName,
