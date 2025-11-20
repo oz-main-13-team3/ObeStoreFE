@@ -12,7 +12,7 @@ export function MyPage() {
       <p>첫 리뷰를 작성하고 특별한 혜택을 받으세요!</p>
       <div className='bg-primary-100 flex w-full justify-between'>
         <div className='flex flex-col p-4'>
-          <NavLink to='/users/Wishlists' className='flex items-center gap-4 font-bold'>
+          <NavLink to='/users/wishlist' className='flex items-center gap-4 font-bold'>
             찜한 상품
             <IoIosArrowForward />
           </NavLink>
